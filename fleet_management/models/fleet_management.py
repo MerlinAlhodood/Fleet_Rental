@@ -7,6 +7,43 @@ class FleetVehicle(models.Model):
 
     analytic_account_id = fields.Many2one('account.analytic.account', string="Analytic Account", readonly=True)
 
+
+# smart button for fleet
+
+    def action_expense_entries(self):
+        bills = self.env['account.move'].search([
+            ('vehicle_id', '=', self.id),
+            ('move_type', '=', 'in_invoice'),
+        ])
+        print(bills,'bilssss')
+
+        return {
+            'name': 'Expense Entries',
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move',
+            'view_mode': 'tree,form',
+            'domain': [('id', 'in', bills.ids)],
+            'context': {'default_vehicle_id': self.id},
+        }
+
+    def _compute_expense_entries_count(self):
+
+        for record in self:
+            record.expense_entries_count = self.env['account.move'].search_count([
+                ('vehicle_id', '=', record.id),
+                ('move_type', '=', 'in_invoice'),
+            ])
+
+    expense_entries_count = fields.Integer(string="Expense Entries Count", compute="_compute_expense_entries_count")
+
+
+
+
+
+
+
+
+
     @api.model
     def create(self, vals):
 
@@ -29,3 +66,4 @@ class FleetVehicle(models.Model):
 
         vals['analytic_account_id'] = analytic_account.id
         return super(FleetVehicle, self).create(vals)
+

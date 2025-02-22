@@ -8,9 +8,24 @@
                 <field name="analytic_account_id" string="Analytic Account"/>
             </xpath>
 
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_expense_entries" type="object" class="oe_stat_button" icon="fa-credit-card"
+                        string="Expense Entries">
+                        <field name="expense_entries_count" widget="statinfo"/>
+                </button>
+            </xpath>
+
 
         </field>
     </record>
+
+
+<!--    <record id="action_project_expense_entry" model="ir.actions.act_window">-->
+<!--        <field name="name">Expense Entries</field>-->
+<!--        <field name="res_model">project.expense.entry</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--        <field name="target">current</field>-->
+<!--    </record>-->
 
 
     <record id="view_project_project_tree_custom" model="ir.ui.view">
@@ -41,6 +56,7 @@
     <menuitem id="menu_fleet_rental_management"
               name="Fleet Rental"
               sequence="14"
+              web_icon="fleet_management,static/description/fleet_rental.png"
     />
 
 
