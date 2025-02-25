@@ -16,6 +16,29 @@
             </xpath>
 
 
+<!--            for report-->
+
+            <xpath expr="//header" position="inside">
+                <button name="action_fleet_income_expense_report"
+                        type="object"
+                        string="Income &amp; Expense Report"
+                        class="oe_highlight"
+                        icon="fa-file-pdf"/>
+
+                <button name="action_fleet_maintenance_history_report" type="object"
+                        string="Maintenance History Report" class="btn-primary"/>
+            </xpath>
+
+
+
+
+
+
+
+
+
+<!--report end-->
+
         </field>
     </record>
 

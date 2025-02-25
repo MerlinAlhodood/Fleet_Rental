@@ -12,9 +12,12 @@
         # 'data/ir_sequence.xml',
         # 'security/security.xml',
         'security/ir.model.access.csv',
+        'report/income_expense_report.xml',
+        'report/fleet_maintainance_history_report.xml',
         'views/fleet_management.xml',
         'views/project_management.xml',
         'views/hr_employee.xml',
+        'views/report_action.xml',
 
     ],
     'assets': {},

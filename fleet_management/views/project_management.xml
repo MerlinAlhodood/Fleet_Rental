@@ -23,11 +23,9 @@
                         <tree editable="bottom">
 <!--                            <field name="project_id" invisible="1"/>-->
                             <field name="bill_id"/>
-                             <field name="invoice_date"/>
+<!--                             <field name="invoice_date"/>-->
                             <field name="amount"/>
 
-
-<!--                            <field name="company_id"/>-->
                         </tree>
                     </field>
                 </page>
@@ -36,7 +34,8 @@
                         <tree>
                             <field name="date"/>
                             <field name="amount"/>
-                            <button name="action_create_invoice" type="object" string="Create Invoice" class="oe_highlight"/>
+                            <field name="invoice_created" invisible="1"/>
+                            <button name="action_create_invoice" type="object" string="Create Invoice" class="oe_highlight" invisible="invoice_created == True"/>
                         </tree>
                     </field>
                 </page>
@@ -60,23 +59,17 @@
                  <field name="responsible_customer_id"  invisible="responsible_selection != 'customer' or move_type != 'in_invoice' or type_selection == 'project'" required="1"/>
                 <field name="responsible_driver_id" invisible="responsible_selection != 'driver' or move_type != 'in_invoice' or type_selection == 'project'" required="1"/>
                 <field name="responsible_company_id" invisible="responsible_selection != 'company' or move_type != 'in_invoice'" required="1"/>
-
             </xpath>
         </field>
     </record>
 
 
     <record id="action_project_expense_entry" model="ir.actions.act_window">
-    <field name="name">Expense Entries</field>
-    <field name="res_model">project.expense.entry</field>
-    <field name="view_mode">tree,form</field>
-    <field name="target">current</field>
-</record>
-
-
-
-
-
+        <field name="name">Expense Entries</field>
+        <field name="res_model">project.expense.entry</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+    </record>
 
 
 </odoo>
