@@ -111,7 +111,7 @@ class FleetVehicle(models.Model):
         maintenance_details = []
         for record in maintenance_records:
             maintenance_details.append({
-                # 'service_id': record.reference or 'N/A',  # Reference instead of 'name'
+                # 'service_id': record.reference or 'N/A',
                 'date': record.date or 'N/A',
                 'description': record.description or 'N/A',
                 'service_type': record.service_type_id.name if record.service_type_id else 'N/A',
@@ -120,7 +120,7 @@ class FleetVehicle(models.Model):
                 'vendor': record.vendor_id.name if record.vendor_id else 'N/A',
                 # 'notes': record.notes or 'N/A',
                 'cost': record.amount or 0.0,
-                # 'state': record.state.id if record.state.id else 'N/A',
+                'state': record.state if record.state else 'N/A',
             })
 
         report_data = {

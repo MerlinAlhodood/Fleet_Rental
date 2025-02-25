@@ -20,7 +20,7 @@
                                     <th>Vendor</th>
 <!--                                    <th>Notes</th>-->
                                     <th>Cost</th>
-<!--                                    <th>Stage</th>-->
+                                    <th>Stage</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -41,6 +41,8 @@
                                         <td>
                                             <t t-esc="record['vendor']"/>
                                         </td>
+
+
 <!--                                        <td>-->
 <!--                                            <t t-esc="record['notes']"/>-->
 <!--                                        </td>-->
@@ -48,9 +50,9 @@
                                             <t t-esc="record['cost']"/>
                                             AED
                                         </td>
-<!--                                        <td>-->
-<!--                                            <t t-esc="record['state']"/>-->
-<!--                                        </td>-->
+                                        <td>
+                                            <t t-esc="record['state']"/>
+                                        </td>
                                     </tr>
                                 </t>
                             </tbody>
