@@ -9,7 +9,7 @@
          'project','account','base','fleet','hr_timesheet','hr'
     ],
     'data': [
-        # 'data/ir_sequence.xml',
+        'data/cron_job.xml',
         # 'security/security.xml',
         'security/ir.model.access.csv',
         'report/income_expense_report.xml',
@@ -18,6 +18,7 @@
         'views/project_management.xml',
         'views/hr_employee.xml',
         'views/report_action.xml',
+        'views/res_partner.xml',
 
     ],
     'assets': {},

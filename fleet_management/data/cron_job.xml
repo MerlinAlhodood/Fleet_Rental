@@ -1,0 +1,43 @@
+<odoo>
+    <data>
+
+        <record id="ir_cron_create_invoices_for_weekly_rent" model="ir.cron">
+            <field name="name">Create Invoices for Weekly Rent</field>
+            <field name="model_id" ref="model_project_contract_line"/>
+            <field name="state">code</field>
+            <field name="code">model.create_invoice_for_contract_lines()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">weeks</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+        </record>
+
+
+
+<!--        <record id="ir_cron_create_invoices_for_monthly_rent" model="ir.cron">-->
+<!--            <field name="name">Create Invoices for Monthly Rent</field>-->
+<!--            <field name="model_id" ref="model_project_contract_line"/>-->
+<!--            <field name="state">code</field>-->
+<!--            <field name="code">model.create_invoice_for_contract_lines()</field>-->
+<!--            <field name="interval_number">1</field> -->
+<!--            <field name="interval_type">months</field>-->
+<!--            <field name="numbercall">-1</field>-->
+<!--            <field name="active" eval="True"/>-->
+<!--        </record>-->
+
+
+
+        <record id="ir_cron_create_invoices_for_yearly_rent" model="ir.cron">
+            <field name="name">Create Invoices for Yearly Rent</field>
+            <field name="model_id" ref="model_project_contract_line"/>
+            <field name="state">code</field>
+            <field name="code">model.create_invoice_for_contract_lines()</field>
+            <field name="interval_number">12</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,5 +1,7 @@
 from datetime import timedelta
 
+from dateutil.relativedelta import relativedelta
+
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 
@@ -24,6 +26,31 @@ class ProjectProject(models.Model):
 
     expense_entry_ids = fields.One2many('project.expense.entry', 'project_id', string="Expense Entries")
     contract_line_ids = fields.One2many('project.contract.line', 'project_id', string="Invoice Entries")
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('running', 'Running'),
+        ('scheduled', 'Scheduled'),
+        ('expired', 'Expired'),
+        ('cancel', 'Cancelled'),
+    ], default='draft', string='State')
+
+    def action_submit(self):
+        self.write({'state': 'running'})
+        return True
+
+    def action_validate(self):
+        self.write({'state': 'expired'})
+        return True
+
+    def action_cancel(self):
+        self.write({'state': 'cancel'})
+        return True
+
+    def reset_to_draft(self):
+        self.write({'state': 'draft'})
+        return True
+
+
 
 
     def action_schedule(self):
@@ -41,6 +68,8 @@ class ProjectProject(models.Model):
             self._generate_monthly_rent_lines()
         elif self.rent_types == 'yearly':
             self._generate_yearly_rent_lines()
+
+        self.state = 'scheduled'
 
     def _generate_weekly_rent_lines(self):
         current_date = fields.Date.from_string(self.date_start)
@@ -90,6 +119,15 @@ class ProjectProject(models.Model):
 
 
 
+    @api.constrains('vehicle_ids')
+    def _check_vehicle_stage(self):
+        for project in self:
+            # Loop through selected vehicles
+            for vehicle in project.vehicle_ids:
+                if vehicle.vehicle_stages in ['under_maintenance', 'under_contract']:
+                    raise UserError(
+                        'You cannot select vehicles that are in "Under Maintenance" or "Under Contract" stages.'
+                    )
 
 
 
@@ -124,32 +162,75 @@ class ProjectContractLine(models.Model):
     project_id = fields.Many2one('project.project', string="Project", required=True)
     date = fields.Date(string="Rent Date", required=True)
     amount = fields.Float(string="Rent Amount", required=True)
-    invoice_created = fields.Boolean(string="Invoice Created", default=False)
+    is_invoice_created = fields.Boolean(string="", default=False)
 
-    def action_create_invoice(self):
-        print('deffffffffffff')
-        self.ensure_one()
-        if not self.project_id.partner_id:
-            raise UserError("No partner found on the project. Please set a partner before creating an invoice.")
+    # cron job
 
-        invoice_vals = {
-            'partner_id': self.project_id.partner_id.id,
-            'move_type': 'out_invoice',
-            'invoice_date': fields.Date.today(),
-            'invoice_line_ids': [(0, 0, {
-                'name': f'Rent for {self.date}',
-                'price_unit': self.amount,
+    @api.model
+    def create_invoice_for_contract_lines(self):
+        today = fields.Date.today()
+        contract_lines = self.search([('is_invoice_created', '=', False)])
 
-            })],
-            'state': 'draft',
-        }
+        for contract_line in contract_lines:
+            # Ensure the invoice is created only for the start date
+            if contract_line.date == today and not contract_line.is_invoice_created:
+                if not contract_line.project_id.partner_id:
+                    raise UserError("No partner found on the project. Please set a partner before creating an invoice.")
 
 
-        invoice = self.env['account.move'].create(invoice_vals)
-        print(invoice,'invoiceeeeeeeee')
-        self.invoice_created = True
+                invoice_vals = {
+                    'partner_id': contract_line.project_id.partner_id.id,
+                    'move_type': 'out_invoice',
+                    'invoice_date': today,
+                    'invoice_line_ids': [(0, 0, {
+                        'name': f'Rent for {contract_line.date}',
+                        'price_unit': contract_line.amount,
+                    })],
+                    'state': 'draft',
+                }
+                invoice = self.env['account.move'].create(invoice_vals)
 
-        return invoice
+                contract_line.is_invoice_created = True
+
+                # Update the contract line's date based on rent type (Weekly, Monthly, Yearly)
+                if contract_line.project_id.rent_types == 'weekly':
+                    contract_line.date += relativedelta(weeks=1)
+                elif contract_line.project_id.rent_types == 'monthly':
+                    contract_line.date += relativedelta(months=1)
+                elif contract_line.project_id.rent_types == 'yearly':
+                    contract_line.date += relativedelta(years=1)
+
+        return True
+
+
+    # # # # # # # # # # # # # # # # #
+
+
+# commented for cron job
+    # def action_create_invoice(self):
+    #     print('deffffffffffff')
+    #     self.ensure_one()
+    #     if not self.project_id.partner_id:
+    #         raise UserError("No partner found on the project. Please set a partner before creating an invoice.")
+    #
+    #     invoice_vals = {
+    #         'partner_id': self.project_id.partner_id.id,
+    #         'move_type': 'out_invoice',
+    #         'invoice_date': fields.Date.today(),
+    #         'invoice_line_ids': [(0, 0, {
+    #             'name': f'Rent for {self.date}',
+    #             'price_unit': self.amount,
+    #
+    #         })],
+    #         'state': 'draft',
+    #     }
+    #
+    #
+    #     invoice = self.env['account.move'].create(invoice_vals)
+    #     print(invoice,'invoiceeeeeeeee')
+    #     self.invoice_created = True
+    #
+    #     return invoice
 
 
 class AccountMove(models.Model):
@@ -175,7 +256,6 @@ class AccountMove(models.Model):
 
     responsible_company_id = fields.Many2one('res.company', string="Responsible Company",
                                              default=lambda self: self.env.company)
-
 
 
 

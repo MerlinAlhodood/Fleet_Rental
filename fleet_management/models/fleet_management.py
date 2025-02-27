@@ -7,6 +7,12 @@ class FleetVehicle(models.Model):
 
     analytic_account_id = fields.Many2one('account.analytic.account', string="Analytic Account", readonly=True)
 
+    vehicle_stages = fields.Selection([
+        ('available', 'Available'),
+        ('under_maintenance', 'Under Maintenance'),
+        ('under_contract', 'Under Contract'),
+    ], string="Stages", default='available')
+
 
 # smart button for fleet
 
@@ -107,7 +113,6 @@ class FleetVehicle(models.Model):
         maintenance_records = self.env['fleet.vehicle.log.services'].search([
             ('vehicle_id', '=', self.id)
         ])
-
         maintenance_details = []
         for record in maintenance_records:
             maintenance_details.append({
