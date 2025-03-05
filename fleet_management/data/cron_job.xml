@@ -2,8 +2,9 @@
     <data>
 
         <record id="ir_cron_create_invoices_for_weekly_rent" model="ir.cron">
-            <field name="name">Create Invoices for Weekly Rent</field>
-            <field name="model_id" ref="model_project_contract_line"/>
+            <field name="name">Create Invoices for Weekly &amp; Monthly Rent</field>
+             <field name="model_id" ref="fleet_management.model_fleet_contract_line"/>
+<!--            <field name="model_id" ref="model_fleet.contract.line"/>-->
             <field name="state">code</field>
             <field name="code">model.create_invoice_for_contract_lines()</field>
             <field name="interval_number">1</field>
@@ -29,7 +30,8 @@
 
         <record id="ir_cron_create_invoices_for_yearly_rent" model="ir.cron">
             <field name="name">Create Invoices for Yearly Rent</field>
-            <field name="model_id" ref="model_project_contract_line"/>
+<!--            <field name="model_id" ref="model_fleet.contract.line"/>-->
+            <field name="model_id" ref="fleet_management.model_fleet_contract_line"/>
             <field name="state">code</field>
             <field name="code">model.create_invoice_for_contract_lines()</field>
             <field name="interval_number">12</field>

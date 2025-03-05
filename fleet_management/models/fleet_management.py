@@ -16,6 +16,8 @@ class FleetVehicle(models.Model):
 
 # smart button for fleet
 
+    expense_entries_count = fields.Integer(string="Expense Entries", compute="_compute_expense_entries_count")
+
     def action_expense_entries(self):
         bills = self.env['account.move'].search([
             ('vehicle_id', '=', self.id),
@@ -35,13 +37,11 @@ class FleetVehicle(models.Model):
     def _compute_expense_entries_count(self):
 
         for record in self:
+            print(record,'recooooo')
             record.expense_entries_count = self.env['account.move'].search_count([
                 ('vehicle_id', '=', record.id),
                 ('move_type', '=', 'in_invoice'),
             ])
-
-    expense_entries_count = fields.Integer(string="Expense Entries", compute="_compute_expense_entries_count")
-
 
 
     @api.model

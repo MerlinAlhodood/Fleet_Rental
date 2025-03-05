@@ -1,3 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_project_expense_entry,project.expense.entry,model_project_expense_entry,,1,1,1,1
-access_project_contract_line,project.contract.line,model_project_contract_line,,1,1,1,1
+access_fleet_contract_expense_entry,fleet.contract.expense.entry,model_fleet_contract_expense_entry,,1,1,1,1
+access_fleet_contract_line,fleet.contract.line,model_fleet_contract_line,,1,1,1,1
+access_fleet_rental_contract,fleet.rental.contract,model_fleet_rental_contract,,1,1,1,1
+access_fleet_contract_other_payables,fleet.contract.other.payables,model_fleet_contract_other_payables,,1,1,1,1
+access_fleet_driver_fine,fleet.driver.fine,model_fleet_driver_fine,,1,1,1,1

@@ -47,7 +47,7 @@
 <!--                                            <t t-esc="record['notes']"/>-->
 <!--                                        </td>-->
                                         <td>
-                                            <t t-esc="record['cost']"/>
+                                            <t t-esc="'{:.2f}'.format(record['cost'])"/>
                                             AED
                                         </td>
                                         <td>

@@ -15,10 +15,12 @@
         'report/income_expense_report.xml',
         'report/fleet_maintainance_history_report.xml',
         'views/fleet_management.xml',
-        'views/project_management.xml',
+        # 'views/project_management.xml',
+        'views/fleet_rental_contract.xml',
         'views/hr_employee.xml',
         'views/report_action.xml',
         'views/res_partner.xml',
+        'views/driver_fine.xml',
 
     ],
     'assets': {},

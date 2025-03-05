@@ -1,0 +1,15 @@
+<odoo>
+
+<record id="view_fleet_driver_fine_tree" model="ir.ui.view">
+    <field name="name">fleet.driver.fine.tree</field>
+    <field name="model">fleet.driver.fine</field>
+    <field name="arch" type="xml">
+        <tree string="Driver Fines">
+            <field name="date"/>
+            <field name="description"/>
+            <field name="vehicle_id"/>
+            <field name="amount"/>
+        </tree>
+    </field>
+</record>
+    </odoo>

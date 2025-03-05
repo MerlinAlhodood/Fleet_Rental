@@ -24,7 +24,9 @@
                                         <td><t t-esc="expense['bill_id']"/></td>
                                         <td><t t-esc="expense['date']"/></td>
 <!--                                        <td><t t-esc="expense['partner_name']"/></td>-->
-                                        <td><t t-esc="expense['amount'] or 0.0"/></td>
+                                        <td><t t-esc="'{:.2f}'.format(expense['amount'] or 0.0)"/></td>
+<!--                                        <td><t t-esc="expense['amount'] or 0.0"/></td>-->
+
                                     </tr>
                                 </t>
                             </tbody>
@@ -45,7 +47,9 @@
                                 <t t-foreach="income" t-as="invoice">
                                     <tr>
                                         <td><t t-esc="invoice['invoice_id']"/></td>
-                                        <td><t t-esc="invoice['amount'] or 0.0"/></td>
+                                        <td><t t-esc="'{:.2f}'.format(invoice['amount'] or 0.0)"/></td>
+<!--                                        <td><t t-esc="invoice['amount'] or 0.0"/></td>-->
+
                                     </tr>
                                 </t>
                             </tbody>
